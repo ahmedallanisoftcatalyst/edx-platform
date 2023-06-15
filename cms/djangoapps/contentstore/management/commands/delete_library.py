@@ -40,12 +40,12 @@ class Command(BaseCommand):
         libraries = store.get_libraries()  # BIS DEBUG deliberately crossing wires (course instead of lib)
         for lib in libraries:
             print(f'####### found library {lib.display_name}')
-            self._display_library(lib.location.library_key)
+            self._display_library(store, lib.location.library_key)
         print("****** Done searching ******")
 
 
 
-    def _display_library(self, library_key):
+    def _display_library(self, store, library_key):
         """
         Displays single library
         """
@@ -64,7 +64,12 @@ class Command(BaseCommand):
         json_bytestring = library_blocks_view(library, 'delete_library management command', response_format).content
         print("###### Returned from library_blocks_view() #########")
         dict_str = json_bytestring.decode("UTF-8")
+        library_dict = json.loads(dict_str)
+
         print(f'######## {str(dict_str)} ###########')
-        mydata = ast.literal_eval(dict_str)
-        print(json.dumps(mydata))
+        for usage_key in library_dict['blocks']:
+            locator = LibraryLocator(usage_key)
+            print(f"About to attempt to delete {usage_key}")
+            store.delete_item(locator, "delete_library management command")
+            print(f"Done deleting {usage_key}")
         print("****** Done looking for block info ******")
