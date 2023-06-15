@@ -39,23 +39,24 @@ class Command(BaseCommand):
         libraries = store.get_libraries()  # BIS DEBUG deliberately crossing wires (course instead of lib)
         for lib in libraries:
             print(f'####### found library {lib.display_name}')
+            self._display_library(lib.location.library_key)
         print("****** Done searching ******")
 
-        self._display_library("library-v1:edX+devstack_test+101")
 
-    def _display_library(self, library_key_string):
+
+    def _display_library(self, library_key):
         """
         Displays single library
         """
-        print(f"****** Looking for block info on {library_key_string} library")
-        library_key = CourseKey.from_string(library_key_string)
+        print(f"****** Looking for block info on {str(library_key)} library")
+        # library_key = CourseKey.from_string(library_key_string)
         if not isinstance(library_key, LibraryLocator):
             print("Non-library key passed to content libraries API.")  # Should never happen due to url regex
             exit(0)
 
         library = modulestore().get_library(library_key)
         if library is None:
-            print("Library %s not found", str(library_key))
+            print("Library not found", str(library_key))
             exit(0)
 
         response_format = 'json'
