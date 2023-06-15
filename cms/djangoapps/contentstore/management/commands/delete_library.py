@@ -62,7 +62,9 @@ class Command(BaseCommand):
 
         response_format = 'json'
         json_bytestring = library_blocks_view(library, 'delete_library management command', response_format).content
+        print("###### Returned from library_blocks_view() #########")
         dict_str = json_bytestring.decode("UTF-8")
+        print(f'######## {str(dict_str)} ###########')
         mydata = ast.literal_eval(dict_str)
         print(json.dumps(mydata))
         print("****** Done looking for block info ******")
