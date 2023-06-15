@@ -1,6 +1,7 @@
 """
 Management Command to delete a v1 library.
 """
+import ast
 import json
 
 from cms.djangoapps.contentstore.views.library import library_blocks_view
@@ -60,6 +61,8 @@ class Command(BaseCommand):
             exit(0)
 
         response_format = 'json'
-        json_info = library_blocks_view(library, 'delete_library management command', response_format).data
-        print(json.dumps(json_info))
+        json_bytestring = library_blocks_view(library, 'delete_library management command', response_format).content
+        dict_str = json_bytestring.decode("UTF-8")
+        mydata = ast.literal_eval(dict_str)
+        print(json.dumps(mydata))
         print("****** Done looking for block info ******")
