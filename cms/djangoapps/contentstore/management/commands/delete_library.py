@@ -27,12 +27,11 @@ class Command(BaseCommand):
         except TypeError:
             library_key = str(options['library_key'])
 
-        print(f'"****** In management command to delete library {library_key}. Looking for edX libraries ...')
+        print(f'"****** In management command to delete library {library_key}. Looking for libraries ...')
         store = modulestore()
         if not hasattr(store, 'get_libraries'):
-            print ("This modulestore does not support get_libraries()")
-            exit()
-        libraries = store.get_courses()  # BIS DEBUG deliberately crossing wires (course instead of lib)
+            print ("###### This modulestore does not support get_libraries() ######")
+        libraries = store.get_libraries()  # BIS DEBUG deliberately crossing wires (course instead of lib)
         for lib in libraries:
             print(f'####### found library {lib.display_name}')
         print("****** Done searching ******")
