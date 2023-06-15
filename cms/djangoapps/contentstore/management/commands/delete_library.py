@@ -1,7 +1,12 @@
 """
 Management Command to delete a v1 library.
 """
+import json
+
+from cms.djangoapps.contentstore.views.library import library_blocks_view
 from django.core.management.base import BaseCommand
+from opaque_keys.edx.keys import CourseKey
+from opaque_keys.edx.locator import LibraryLocator
 from xmodule.modulestore.django import modulestore
 
 class Command(BaseCommand):
@@ -35,3 +40,25 @@ class Command(BaseCommand):
         for lib in libraries:
             print(f'####### found library {lib.display_name}')
         print("****** Done searching ******")
+
+        self._display_library("library-v1:edX+devstack_test+101")
+
+    def _display_library(self, library_key_string):
+        """
+        Displays single library
+        """
+        print(f"****** Looking for block info on {library_key_string} library")
+        library_key = CourseKey.from_string(library_key_string)
+        if not isinstance(library_key, LibraryLocator):
+            print("Non-library key passed to content libraries API.")  # Should never happen due to url regex
+            exit(0)
+
+        library = modulestore().get_library(library_key)
+        if library is None:
+            print("Library %s not found", str(library_key))
+            exit(0)
+
+        response_format = 'json'
+        json_info = library_blocks_view(library, 'delete_library management command', response_format)
+        print(json.dumps(json_info, indent = 2))
+        print("****** Done looking for block info ******")
