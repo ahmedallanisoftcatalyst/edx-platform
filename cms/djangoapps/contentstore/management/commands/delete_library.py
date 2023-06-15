@@ -2,6 +2,7 @@
 Management Command to delete a v1 library.
 """
 from django.core.management.base import BaseCommand
+from xmodule.modulestore.django import modulestore
 
 class Command(BaseCommand):
     """
@@ -26,4 +27,9 @@ class Command(BaseCommand):
         except TypeError:
             library_key = str(options['library_key'])
 
-        print(f'"****** In management command to delete library {library_key}')
+        print(f'"****** In management command to delete library {library_key}. Looking for edX libraries ...')
+        store = modulestore()
+        libraries = store.get_libaries(org='edX')
+        for lib in libraries:
+            print(f'####### found library {lib.display_name}')
+        print("****** Done searching ******")
