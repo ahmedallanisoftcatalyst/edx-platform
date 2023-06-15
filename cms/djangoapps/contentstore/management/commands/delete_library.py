@@ -60,6 +60,6 @@ class Command(BaseCommand):
             exit(0)
 
         response_format = 'json'
-        json_info = library_blocks_view(library, 'delete_library management command', response_format)
-        print(json_info.json())
+        json_info = library_blocks_view(library, 'delete_library management command', response_format).read()
+        print(json.dumps(json_info))
         print("****** Done looking for block info ******")
