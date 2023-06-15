@@ -29,6 +29,9 @@ class Command(BaseCommand):
 
         print(f'"****** In management command to delete library {library_key}. Looking for edX libraries ...')
         store = modulestore()
+        if not hasattr(store, 'get_libraries'):
+            print ("This modulestore does not support get_libraries()")
+            exit()
         libraries = store.get_courses()  # BIS DEBUG deliberately crossing wires (course instead of lib)
         for lib in libraries:
             print(f'####### found library {lib.display_name}')
