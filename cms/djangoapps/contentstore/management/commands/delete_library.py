@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
         print(f'"****** In management command to delete library {library_key}. Looking for edX libraries ...')
         store = modulestore()
-        libraries = store.get_libaries(org='edX')
+        libraries = store.get_courses()  # BIS DEBUG deliberately crossing wires (course instead of lib)
         for lib in libraries:
             print(f'####### found library {lib.display_name}')
         print("****** Done searching ******")
