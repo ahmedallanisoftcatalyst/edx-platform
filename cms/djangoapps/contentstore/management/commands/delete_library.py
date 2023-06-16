@@ -70,7 +70,8 @@ class Command(BaseCommand):
 
         # print(f'######## {str(dict_str)} ###########')
         for usage_key in library_dict['blocks']:
-            print(f"###### About to attempt to delete {usage_key} ######")
-            store.delete_item(usage_key, "delete_library management command")
-            print(f"###### Done deleting {usage_key} ######")
+            block_usage_key = library_key.make_usage_key('html', 'e7d84016436b4c2dac22e9cbde9e7345')
+            print(f"###### About to attempt to delete {str(block_usage_key)} ######")
+            store.delete_item(block_usage_key, "delete_library management command")
+            print(f"###### Done deleting {str(block_usage_key} ######")
         print("****** Done looking for block info ******")
