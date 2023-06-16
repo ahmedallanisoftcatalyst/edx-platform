@@ -64,12 +64,14 @@ class Command(BaseCommand):
         json_bytestring = library_blocks_view(library, 'delete_library management command', response_format).content
         print("###### Returned from library_blocks_view() #########")
         dict_str = json_bytestring.decode("UTF-8")
+        print (f"##### dict_str = {dict_str} ##### ")
         library_dict = json.loads(dict_str)
+        print (f'##### library_dict = {library_dict} ######')
 
-        print(f'######## {str(dict_str)} ###########')
+        # print(f'######## {str(dict_str)} ###########')
         for usage_key in library_dict['blocks']:
             locator = LibraryLocator(usage_key)
-            print(f"About to attempt to delete {usage_key}")
+            print(f"###### About to attempt to delete {usage_key} ######")
             store.delete_item(locator, "delete_library management command")
-            print(f"Done deleting {usage_key}")
+            print(f"###### Done deleting {usage_key} ######")
         print("****** Done looking for block info ******")
