@@ -35,10 +35,13 @@ except ImportError:
 from xmodule.modulestore.django import modulestore  # lint-amnesty, pylint: disable=wrong-import-order
 from xmodule.modulestore.exceptions import ItemNotFoundError  # lint-amnesty, pylint: disable=wrong-import-order
 
-from ..utils import get_lms_link_for_item, get_sibling_urls, reverse_course_url, \
-    load_services_for_studio
-from .helpers import get_parent_xblock, is_unit, xblock_type_display_name
-from .block import add_container_page_publishing_info, create_xblock_info
+from ..utils import get_lms_link_for_item, get_sibling_urls, reverse_course_url
+from ..helpers import get_parent_xblock, is_unit, xblock_type_display_name
+from cms.djangoapps.contentstore.xblock_services.xblock_service import (
+    add_container_page_publishing_info,
+    create_xblock_info,
+    load_services_for_studio,
+)
 
 __all__ = [
     'container_handler',
@@ -306,8 +309,8 @@ def get_component_templates(courselike, library=False):  # lint-amnesty, pylint:
     # by the components in the order listed in COMPONENT_TYPES.
     component_types = COMPONENT_TYPES[:]
 
-    # Libraries do not support discussions and openassessment and other libraries
-    component_not_supported_by_library = ['discussion', 'library', 'openassessment']
+    # Libraries do not support discussions, drag-and-drop, and openassessment and other libraries
+    component_not_supported_by_library = ['discussion', 'library', 'openassessment', 'drag-and-drop-v2']
     if library:
         component_types = [component for component in component_types
                            if component not in set(component_not_supported_by_library)]
