@@ -821,6 +821,8 @@ def storage_service_bucket():
     """
     Returns an S3 bucket for video upload.
     """
+    from boto.s3.connection import S3Connection
+
     if ENABLE_DEVSTACK_VIDEO_UPLOADS.is_enabled():
         params = {
             'aws_access_key_id': settings.AWS_ACCESS_KEY_ID,
@@ -834,7 +836,7 @@ def storage_service_bucket():
             'aws_secret_access_key': settings.AWS_SECRET_ACCESS_KEY
         }
 
-    conn = s3.connection.S3Connection(**params)
+    conn = S3Connection(**params)
 
     # We don't need to validate our bucket, it requires a very permissive IAM permission
     # set since behind the scenes it fires a HEAD request that is equivalent to get_all_keys()
