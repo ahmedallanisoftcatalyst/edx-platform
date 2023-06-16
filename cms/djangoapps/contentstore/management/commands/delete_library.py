@@ -70,8 +70,7 @@ class Command(BaseCommand):
 
         # print(f'######## {str(dict_str)} ###########')
         for usage_key in library_dict['blocks']:
-            locator = LibraryLocator(usage_key)
             print(f"###### About to attempt to delete {usage_key} ######")
-            store.delete_item(locator, "delete_library management command")
+            store.delete_item(usage_key, "delete_library management command")
             print(f"###### Done deleting {usage_key} ######")
         print("****** Done looking for block info ******")
